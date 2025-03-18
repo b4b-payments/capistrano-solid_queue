@@ -12,6 +12,19 @@ namespace :solid_queue do # rubocop:disable Metrics
     end
   end
 
+  desc "Set up database"
+  task :db_setup do
+    on roles(fetch(:solid_queue_role)) do |role|
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, "db:create"
+          execute :rake, "db:prepare"
+        end
+      end
+    end
+  end
+
+
   desc "Install solid_queue systemd service"
   task :install do
     on roles(fetch(:solid_queue_role)) do |role|
