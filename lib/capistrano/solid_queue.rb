@@ -25,7 +25,7 @@ module Capistrano
       end
 
       def execute_systemd(*args, raise_on_non_zero_exit: true)
-        command = ["/bin/systemctl", "--user"] + args
+        command = ["/bin/systemctl", fetch(:solid_queue_systemctl_user) == :system ? nil : "--user"].compact + args
         backend.execute(*command, raise_on_non_zero_exit: raise_on_non_zero_exit)
       end
 
